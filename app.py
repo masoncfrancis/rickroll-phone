@@ -29,7 +29,7 @@ def rejection():
     phoneFile.close()
 
     openAiInfoFile = open("openaiauth.json")
-    openAiInfo = json.load(openAiInfoFile)
+    openai.api_key = json.load(openAiInfoFile)['key']
     openAiInfoFile.close()
 
     dbInfoFile = open("db.json")
@@ -56,6 +56,7 @@ def rejection():
     dbCursor.execute(getQuery)
 
     getResult = dbCursor.fetchone()
+    secondResult = dbCursor.fetchone()
     throwAway = dbCursor.fetchall()
     if getResult == None:
         prompt = prompt + " \n\n" + receivedText + " \n\n"
