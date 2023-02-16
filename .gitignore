@@ -3,3 +3,4 @@ phonenumbers.json
 db.json
 openaiauth.json
 /venv/
+/static/music.mp3
