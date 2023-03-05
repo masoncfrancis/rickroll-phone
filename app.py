@@ -5,7 +5,7 @@ import json
 import openai
 import mysql.connector
 
-def commandProc(textArray, twilioAut, dbCursor=None):
+def commandProc(textArray, twilioAut, dbConn=None, dbCursor=None):
     client = Client(twilioAuth['accountsid'], twilioAuth['authtoken'])
     phoneNum = "+1" + textArray[1]
     if textArray[0][1:] == "rickroll":
@@ -14,8 +14,11 @@ def commandProc(textArray, twilioAut, dbCursor=None):
                         to=phoneNum,
                         from_='+18013493494'
                     )
-    elif textArray[0][1:] == "deletehistory":
+    elif textArray[0][1:] == "deletehistory": # delete text history
+        query = f"DELETE FROM rejection.openaitest WHERE phoneNumber ='{phoneNum}'"
+        dbCursor.execute(query)
 
+        
 
 app = Flask(__name__)
 
@@ -66,7 +69,7 @@ def rejection():
 
     # check for commands
     if receivedText[0] == "#":
-        commandProc(receivedText.split(), info, dbCursor)
+        commandProc(receivedText.split(), info, dbConn, dbCursor)
     else:
 
         # get message reply from OpenAI API
@@ -106,7 +109,7 @@ def rejection():
 
         message = client.messages.create(
                                     body=openAiResponse['choices'][0]['text'].lstrip('\t\n\r'),
-                                    from_=phone["from"],
+                                    from_='+18013493494',
                                     to=phoneNumber
                                 )
 
