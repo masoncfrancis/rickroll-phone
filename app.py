@@ -5,7 +5,7 @@ import json
 import openai
 import mysql.connector
 
-def commandProc(textArray, twilioAut, dbConn=None, dbCursor=None):
+def commandProc(textArray, twilioAuth, dbConn=None, dbCursor=None):
     client = Client(twilioAuth['accountsid'], twilioAuth['authtoken'])
     phoneNum = "+1" + textArray[1]
     if textArray[0][1:] == "rickroll":
