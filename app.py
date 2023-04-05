@@ -34,7 +34,7 @@ def getmusic():
 def yeet():
     return "yeetus"
 
-@app.route("/command")
+@app.route("/command", methods=['GET', 'POST'])
 def command_route():
     # get needed auth info
 
