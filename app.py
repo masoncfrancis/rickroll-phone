@@ -34,6 +34,40 @@ def getmusic():
 def yeet():
     return "yeetus"
 
+@app.route("/command")
+def command_route():
+    # get needed auth info
+
+    file = open("accountinfo.json")
+    info = json.load(file)
+    file.close()
+    
+    phoneFile = open("phonenumbers.json")
+    phone = json.load(phoneFile)
+    phoneFile.close()
+
+    dbInfoFile = open("db.json")
+    dbInfo = json.load(dbInfoFile)
+    dbInfoFile.close()
+
+    # connect to db
+    dbConn = mysql.connector.connect(
+        host=dbInfo['address'],
+        user=dbInfo['user'],
+        password=dbInfo['password']
+    )
+    dbCursor = dbConn.cursor()
+
+    # get message info
+    receivedText = request.values.get('Body', None)
+    phoneNumber = request.values.get('From', None)
+
+    # check for commands
+    if receivedText[0] == "#":
+        commandProc(receivedText.split(), info, dbConn, dbCursor)
+    return ""
+
+
 @app.route("/rejection", methods=['GET', 'POST'])
 def rejection():
 
